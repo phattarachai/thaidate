@@ -1,10 +1,5 @@
-[comment]: <> ([![Travis]&#40;https://travis-ci.org/phattarachai/thaidate.svg?branch=master&#41;]&#40;https://travis-ci.org/phattarachai/thaidate?branch=master;)
-
 [![Packagist](https://img.shields.io/packagist/dt/phattarachai/thaidate.svg)](https://github.com/phattarachai/line-notify/releases)
-
-[comment]: <> ([![Test Coverage]&#40;https://codeclimate.com/github/phattarachai/thaidate/badges/coverage.svg&#41;]&#40;https://codeclimate.com/github/phattarachai/thaidate/coverage&#41;)
-
-[comment]: <> ([![Maintainability]&#40;https://api.codeclimate.com/v1/badges/3dc8135eee70ae7da325/maintainability&#41;]&#40;https://codeclimate.com/github/corcel/corcel/maintainability&#41;)
+[![Maintainability](https://api.codeclimate.com/v1/badges/866379571541812960f6/maintainability)](https://codeclimate.com/github/phattarachai/thaidate/maintainability)
 
 # <a id="installation"></a> Installation
 
