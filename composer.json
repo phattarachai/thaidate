@@ -1,0 +1,38 @@
+{
+  "name": "phattarachai/thaidate",
+  "description": "A Laravel, PHP package for thaidate() function",
+  "type": "library",
+  "authors": [
+    {
+      "name": "phattarachai",
+      "email": "phatchai28@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "orchestra/testbench": "^6.13",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phattarachai\\Thaidate\\": "src"
+    },
+    "files": [
+      "src/function.php"
+    ]
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Phattarachai\\Thaidate\\ThaidateServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
