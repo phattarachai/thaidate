@@ -46,7 +46,7 @@ This means you can use thaidate() directly from an Eloquent model attributes tha
 
 ```php
 $user->created_at->thaidate();
-// 25 กุมภาพันธ์ 2564
+// 25 กุมภาพันธ์ 2564 
 ```
 
 ## Credit
