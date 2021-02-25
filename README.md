@@ -1,3 +1,4 @@
+![test](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 [![Packagist](https://img.shields.io/packagist/dt/phattarachai/thaidate.svg)](https://github.com/phattarachai/line-notify/releases)
 [![Maintainability](https://api.codeclimate.com/v1/badges/866379571541812960f6/maintainability)](https://codeclimate.com/github/phattarachai/thaidate/maintainability)
 
