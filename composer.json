@@ -1,0 +1,12 @@
+{
+    "name": "phattarachai/thaidate",
+    "description": "A Laravel, PHP package for thaidate() function",
+    "type": "library",
+    "authors": [
+        {
+            "name": "phattarachai",
+            "email": "phatchai28@gmail.com"
+        }
+    ],
+    "require": {}
+}
