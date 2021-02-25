@@ -44,4 +44,12 @@ class ThaidateTest extends Orchestra\Testbench\TestCase
         $this->assertIsString($result);
     }
 
+    /** @test */
+    public function default_format()
+    {
+        $result = thaidate();
+
+        $this->assertIsString($result);
+    }
+
 }

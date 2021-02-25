@@ -11,7 +11,7 @@ use Phattarachai\Thaidate\Thaidate;
  * @param boolean $buddhistEra Use Buddhist era? set to true to use that or false not to use.
  * @return string Return the formatted date/time string.
  */
-function thaidate(string $format, $timestamp = 'now', bool $buddhistEra = true)
+function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEra = true)
 {
     if (is_string($timestamp)) {
         $timestamp = strtotime($timestamp);
