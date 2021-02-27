@@ -49,6 +49,16 @@ $user->created_at->thaidate();
 // 25 กุมภาพันธ์ 2564 
 ```
 
+## Support Me
+
+<a href="https://store.line.me/stickershop/product/14535782" target="_blank">
+    <img src="https://me.phattarachai.dev/wp-content/uploads/2021/02/Banner.png"
+        alt="Sticker Line 500 Internal Server Error by phattarachai.dev" width="45%" />
+</a>
+
+I love creating Laravel and PHP packages to help making Web developer life easier. You can support me by buying my LINE
+stickers from the [LINE Store](https://store.line.me/stickershop/product/14535782).
+
 ## Credit
 
 A project by [phattarachai.dev](https://phattarachai.dev)
