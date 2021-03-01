@@ -5,7 +5,7 @@ namespace Phattarachai\Thaidate;
 class Thaidate
 {
 
-    public array $longMonths = [
+    public $longMonths = [
         'มกราคม',
         'กุมภาพันธ์',
         'มีนาคม',
@@ -19,7 +19,7 @@ class Thaidate
         'พฤศจิกายน',
         'ธันวาคม'
     ];
-    public array $shortMonths = [
+    public $shortMonths = [
         'ม.ค.',
         'ก.พ.',
         'มี.ค.',
@@ -34,8 +34,8 @@ class Thaidate
         'ธ.ค.'
     ];
 
-    public array $longDays = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
-    public array $shortDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+    public $longDays = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+    public $shortDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
 
 
     /**
