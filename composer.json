@@ -8,6 +8,7 @@
       "email": "phatchai28@gmail.com"
     }
   ],
+  "homepage": "https://phattarachai.dev",
   "require": {
     "php": "^7.3|^8.0"
   },
