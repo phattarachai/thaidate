@@ -21,6 +21,14 @@ class ThaidateTest extends Orchestra\Testbench\TestCase
     }
 
     /** @test */
+    public function convert_from_php_date_time()
+    {
+        $result = thaidate('l j F Y', new DateTime('2021-02-25'));
+
+        $this->assertEquals('พฤหัสบดี 25 กุมภาพันธ์ 2564', $result);
+    }
+
+    /** @test */
     public function convert_from_timestampe_gregorian_calendar()
     {
         $result = thaidate('l j F Y', strtotime('2021-02-25'), false);

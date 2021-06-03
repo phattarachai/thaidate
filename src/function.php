@@ -17,6 +17,10 @@ function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEr
         $timestamp = strtotime($timestamp);
     }
 
+    if ($timestamp instanceof DateTime) {
+        $timestamp = $timestamp->getTimestamp();
+    }
+
     return (new Thaidate)->date($format, $timestamp, $buddhistEra);
 }
 
