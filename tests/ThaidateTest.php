@@ -13,6 +13,22 @@ class ThaidateTest extends Orchestra\Testbench\TestCase
     }
 
     /** @test */
+    public function convert_my_short_birth_date()
+    {
+        $result = thaidate('D j M y', strtotime('1987-11-28'));
+
+        $this->assertEquals('ส. 28 พ.ย. 30', $result);
+    }
+
+    /** @test */
+    public function convert_my_short_34_years_old()
+    {
+        $result = thaidate('D j M y', strtotime('2021-11-28'));
+
+        $this->assertEquals('อา. 28 พ.ย. 64', $result);
+    }
+
+    /** @test */
     public function convert_from_timestampe()
     {
         $result = thaidate('l j F Y', strtotime('2021-02-25'));

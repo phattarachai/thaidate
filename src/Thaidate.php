@@ -54,6 +54,7 @@ class Thaidate
 
         $format = $this->parseYear($format, $timestamp, $buddhistEra);
 
+
         return date($format, $timestamp);
     }
 
@@ -103,7 +104,9 @@ class Thaidate
         }
 
         if (str_contains($format, 'y')) {
-            return str_replace('y', (date('y', $timestamp) + 43), $format);
+
+            $year = (date('y', $timestamp) + 43) % 100;
+            return str_replace('y', $year, $format);
         }
 
         return $format;
