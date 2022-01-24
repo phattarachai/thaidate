@@ -50,15 +50,22 @@ $user->created_at->thaidate();
 // 25 กุมภาพันธ์ 2564 
 ```
 
-## Support Me
+## สนับสนุนผู้พัฒนา
 
-<a href="https://store.line.me/stickershop/product/14535782" target="_blank">
-    <img src="https://me.phattarachai.dev/wp-content/uploads/2021/02/Banner.png"
-        alt="Sticker Line 500 Internal Server Error by phattarachai.dev" width="45%" />
+🙋‍♂️ สวัสดีครับ ผมอ๊อฟนะครับ เป็น Full Stack Web Developer มีสร้าง package ขึ้นมาใช้งานในโปรเจคตัวเองที่ใช้งานบ่อย ๆ
+ถ้ามีข้อเสนอแนะอยากให้ทำ package อะไรบน PHP / Laravel / NodeJS / Python หรือภาษาอื่น ๆ ทักทายมาได้เลยครับ
+
+line:
+[phat-chai](https://line.me/ti/p/~phat-chai)
+
+💻 รับงาน Freelance หากมีโปรเจคที่น่าสนใจ หาทีมงานร่วมงาน หาโปรแกรมเมอร์ที่มีประสบการณ์ช่วยแก้โจทย์ที่ท้าทาย
+ติดต่อมาได้เลยครับ ยินดีให้ความช่วยเหลือและรอสร้างผลงานที่ดีร่วมกันครับ
+
+📄 เข้ามาดูประวัติและผลงานได้ที่ https://phattarachai.dev
+
+<a href="https://phattarachai.dev">
+    <img src="/art/phattarachai.dev.png" alt="https://phattarachai.dev" width="419px" />
 </a>
-
-I love creating Laravel and PHP packages to help making Web developer life easier. You can support me by buying my LINE
-stickers from the [LINE Store](https://store.line.me/stickershop/product/14535782).
 
 ## Credit
 
@@ -67,8 +74,6 @@ A project by [phattarachai.dev](https://phattarachai.dev)
 If my package make your life easier, please consider:
 
 <a href="https://ko-fi.com/phattarachai#checkoutModal" target="_blank">Buy me a Coffee</a> |
-
-<a href="https://twitter.com/phatchai" target="_blank">Follow Me on Twitter</a>
 
 ## License
 
