@@ -67,14 +67,6 @@ line:
     <img src="/art/phattarachai.dev.png" alt="https://phattarachai.dev" width="419px" />
 </a>
 
-## Credit
-
-A project by [phattarachai.dev](https://phattarachai.dev)
-
-If my package make your life easier, please consider:
-
-<a href="https://ko-fi.com/phattarachai#checkoutModal" target="_blank">Buy me a Coffee</a> |
-
 ## License
 
 The MIT License (MIT)
