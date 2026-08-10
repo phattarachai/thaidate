@@ -4,7 +4,7 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/phattarachai/thaidate/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/phattarachai/thaidate/actions/workflows/run-tests.yml?query=branch%3Amain)
 [![Code Style](https://img.shields.io/github/actions/workflow/status/phattarachai/thaidate/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/phattarachai/thaidate/actions/workflows/fix-php-code-style-issues.yml?query=branch%3Amain)
 [![PHP Version](https://img.shields.io/packagist/dependency-v/phattarachai/thaidate/php?style=flat-square&label=php&logo=php&logoColor=white)](https://packagist.org/packages/phattarachai/thaidate)
-![Laravel Version](https://img.shields.io/badge/laravel-11%20%7C%2012%20%7C%2013-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![Laravel Version](https://img.shields.io/badge/laravel-12%20%7C%2013-FF2D20?style=flat-square&logo=laravel&logoColor=white)
 [![Total Downloads](https://img.shields.io/packagist/dt/phattarachai/thaidate.svg?style=flat-square)](https://packagist.org/packages/phattarachai/thaidate)
 
 Display dates in Thai — as a `thaidate()` helper and a Carbon `->thaidate()` macro, with Buddhist-era
