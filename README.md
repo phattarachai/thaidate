@@ -1,8 +1,16 @@
-![test](https://github.com/phattarachai/thaidate/actions/workflows/php.yml/badge.svg)
-[![Packagist](https://img.shields.io/packagist/dt/phattarachai/thaidate.svg)](https://github.com/phattarachai/thaidate/releases)
-[![Maintainability](https://api.codeclimate.com/v1/badges/866379571541812960f6/maintainability)](https://codeclimate.com/github/phattarachai/thaidate/maintainability)
+# Thaidate
 
-# <a id="installation"></a> Installation
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/phattarachai/thaidate.svg?style=flat-square)](https://packagist.org/packages/phattarachai/thaidate)
+[![Tests](https://img.shields.io/github/actions/workflow/status/phattarachai/thaidate/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/phattarachai/thaidate/actions/workflows/run-tests.yml?query=branch%3Amain)
+[![Code Style](https://img.shields.io/github/actions/workflow/status/phattarachai/thaidate/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/phattarachai/thaidate/actions/workflows/fix-php-code-style-issues.yml?query=branch%3Amain)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/phattarachai/thaidate/php?style=flat-square&label=php&logo=php&logoColor=white)](https://packagist.org/packages/phattarachai/thaidate)
+![Laravel Version](https://img.shields.io/badge/laravel-11%20%7C%2012%20%7C%2013-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+[![Total Downloads](https://img.shields.io/packagist/dt/phattarachai/thaidate.svg?style=flat-square)](https://packagist.org/packages/phattarachai/thaidate)
+
+Display dates in Thai — as a `thaidate()` helper and a Carbon `->thaidate()` macro, with Buddhist-era
+years and Thai month/day names.
+
+## <a id="installation"></a> Installation
 
 ```
 composer require phattarachai/thaidate
@@ -48,6 +56,17 @@ This means you can use thaidate() directly from an Eloquent model attributes tha
 ```php
 $user->created_at->thaidate();
 // 25 กุมภาพันธ์ 2564 
+```
+
+## Static analysis
+
+The `->thaidate()` macro is registered at runtime, which PHPStan can't see on its own. This package
+ships the PHPStan support to fix that — `->thaidate()` resolves with no "undefined method" errors and
+no per-project baseline entries. It activates automatically in any project using
+[`phpstan/extension-installer`](https://github.com/phpstan/extension-installer):
+
+```bash
+composer require --dev phpstan/extension-installer
 ```
 
 ## ผู้พัฒนา

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Phattarachai\Thaidate;
 
 use Carbon\Laravel\ServiceProvider;
@@ -8,12 +7,10 @@ use Illuminate\Support\Carbon;
 
 class ThaidateServiceProvider extends ServiceProvider
 {
-
-    public function boot()
+    public function boot(): void
     {
         Carbon::macro('thaidate', function ($format = 'j F Y') {
             return thaidate($format, $this->timestamp);
         });
     }
-
 }

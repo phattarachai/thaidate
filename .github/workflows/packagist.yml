@@ -1,0 +1,19 @@
+name: packagist
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tell Packagist to refresh
+        run: |
+          curl -sSf -XPOST -H 'content-type:application/json' \
+            "https://packagist.org/api/update-package?username=phatchai&apiToken=${{ secrets.PACKAGIST_TOKEN }}" \
+            -d '{"repository":{"url":"https://packagist.org/packages/${{ github.repository }}"}}'

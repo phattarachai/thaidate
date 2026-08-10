@@ -2,32 +2,22 @@
 
 use Phattarachai\Thaidate\Thaidate;
 
-
 /**
- * Thai date based on php built-in date() function.
+ * Thai date based on PHP's built-in date() function.
  *
- * @param string $format The format as same as PHP date function format. See http://php.net/manual/en/function.date.php
- * @param string|int $timestamp The optional timestamp is an integer Unix timestamp.
- * @param boolean $buddhistEra Use Buddhist era? set to true to use that or false not to use.
- * @return string Return the formatted date/time string.
+ * @param  string  $format  Same tokens as PHP's date() — see https://php.net/manual/en/function.date.php
+ * @param  string|int|DateTimeInterface  $timestamp  A Unix timestamp, a strtotime() string, or a DateTime.
+ * @param  bool  $buddhistEra  Convert the year to the Buddhist era.
  */
-function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEra = true)
+function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEra = true): string
 {
     if (is_string($timestamp)) {
         $timestamp = strtotime($timestamp);
     }
 
-    if ($timestamp instanceof DateTime) {
+    if ($timestamp instanceof DateTimeInterface) {
         $timestamp = $timestamp->getTimestamp();
     }
 
-    return (new Thaidate)->date($format, $timestamp, $buddhistEra);
-}
-
-if (!function_exists('str_contains')) {
-    function str_contains(string $haystack, string $needle): bool
-    {
-        return '' === $needle || false !== strpos($haystack, $needle);
-
-    }
+    return (new Thaidate)->date($format, (int) $timestamp, $buddhistEra);
 }

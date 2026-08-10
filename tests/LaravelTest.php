@@ -1,31 +1,11 @@
 <?php
 
-
 use Illuminate\Support\Carbon;
-use Phattarachai\Thaidate\ThaidateServiceProvider;
 
-class LaravelTest extends Orchestra\Testbench\TestCase
-{
+it('resolves the ->thaidate() macro in a short format', function () {
+    expect(Carbon::parse('2021-02-25')->thaidate('D j M y'))->toBe('พฤ. 25 ก.พ. 64');
+});
 
-    protected function getPackageProviders($app)
-    {
-        return [ThaidateServiceProvider::class];
-    }
-
-    /** @test */
-    public function convert_short_format()
-    {
-        $result = Carbon::parse('2021-02-25')->thaidate('D j M y');
-
-        $this->assertEquals('พฤ. 25 ก.พ. 64', $result);
-    }
-
-    /** @test */
-    public function convert_long_format()
-    {
-        $result = Carbon::parse('2021-02-25')->thaidate('l j F Y');
-
-        $this->assertEquals('พฤหัสบดี 25 กุมภาพันธ์ 2564', $result);
-    }
-
-}
+it('resolves the ->thaidate() macro in a long format', function () {
+    expect(Carbon::parse('2021-02-25')->thaidate('l j F Y'))->toBe('พฤหัสบดี 25 กุมภาพันธ์ 2564');
+});

@@ -1,0 +1,6 @@
+# Auto-loaded in a consuming project by phpstan/extension-installer (declared under
+# extra.phpstan.includes in composer.json). Registers the thaidate() Carbon macro for
+# static analysis so Carbon's own MacroExtension can resolve ->thaidate() everywhere.
+parameters:
+    bootstrapFiles:
+        - phpstan-bootstrap.php

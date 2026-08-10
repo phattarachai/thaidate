@@ -1,79 +1,37 @@
 <?php
 
+it('converts a short day/month/year format', function () {
+    expect(thaidate('D j M y', strtotime('2021-02-25')))->toBe('พฤ. 25 ก.พ. 64');
+});
 
-class ThaidateTest extends Orchestra\Testbench\TestCase
-{
+it('converts a date in the 1900s', function () {
+    expect(thaidate('D j M y', strtotime('1987-11-28')))->toBe('ส. 28 พ.ย. 30');
+});
 
-    /** @test */
-    public function convert_short_date_and_month()
-    {
-        $result = thaidate('D j M y', strtotime('2021-02-25'));
+it('converts a date in the 2000s', function () {
+    expect(thaidate('D j M y', strtotime('2021-11-28')))->toBe('อา. 28 พ.ย. 64');
+});
 
-        $this->assertEquals('พฤ. 25 ก.พ. 64', $result);
-    }
+it('converts a long format from a timestamp', function () {
+    expect(thaidate('l j F Y', strtotime('2021-02-25')))->toBe('พฤหัสบดี 25 กุมภาพันธ์ 2564');
+});
 
-    /** @test */
-    public function convert_my_short_birth_date()
-    {
-        $result = thaidate('D j M y', strtotime('1987-11-28'));
+it('converts from a DateTime instance', function () {
+    expect(thaidate('l j F Y', new DateTime('2021-02-25')))->toBe('พฤหัสบดี 25 กุมภาพันธ์ 2564');
+});
 
-        $this->assertEquals('ส. 28 พ.ย. 30', $result);
-    }
+it('keeps the Gregorian year when the Buddhist era is off', function () {
+    expect(thaidate('l j F Y', strtotime('2021-02-25'), false))->toBe('พฤหัสบดี 25 กุมภาพันธ์ 2021');
+});
 
-    /** @test */
-    public function convert_my_short_34_years_old()
-    {
-        $result = thaidate('D j M y', strtotime('2021-11-28'));
+it('accepts a date string', function () {
+    expect(thaidate('j M Y', '2021-02-25'))->toBe('25 ก.พ. 2564');
+});
 
-        $this->assertEquals('อา. 28 พ.ย. 64', $result);
-    }
+it('formats the current time when given no timestamp', function () {
+    expect(thaidate('j M Y'))->toBeString();
+});
 
-    /** @test */
-    public function convert_from_timestampe()
-    {
-        $result = thaidate('l j F Y', strtotime('2021-02-25'));
-
-        $this->assertEquals('พฤหัสบดี 25 กุมภาพันธ์ 2564', $result);
-    }
-
-    /** @test */
-    public function convert_from_php_date_time()
-    {
-        $result = thaidate('l j F Y', new DateTime('2021-02-25'));
-
-        $this->assertEquals('พฤหัสบดี 25 กุมภาพันธ์ 2564', $result);
-    }
-
-    /** @test */
-    public function convert_from_timestampe_gregorian_calendar()
-    {
-        $result = thaidate('l j F Y', strtotime('2021-02-25'), false);
-
-        $this->assertEquals('พฤหัสบดี 25 กุมภาพันธ์ 2021', $result);
-    }
-
-    /** @test */
-    public function convert_from_string()
-    {
-        $result = thaidate('j M Y', '2021-02-25');
-
-        $this->assertEquals('25 ก.พ. 2564', $result);
-    }
-
-    /** @test */
-    public function convert_from_now()
-    {
-        $result = thaidate('j M Y');
-
-        $this->assertIsString($result);
-    }
-
-    /** @test */
-    public function default_format()
-    {
-        $result = thaidate();
-
-        $this->assertIsString($result);
-    }
-
-}
+it('uses the default format', function () {
+    expect(thaidate())->toBeString();
+});
