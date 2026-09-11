@@ -1,29 +1,48 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 
+# Each category both renders a section of the notes and votes on the next version number;
+# the highest `semver-increment` across every matching category wins, and `patch` is the
+# floor when nothing matches. `when:` + `semver-increment:` replace the `labels:` /
+# `version-resolver:` shapes, which release-drafter v7 warns about and v8 removes.
 categories:
   - title: 'Added'
-    labels: ['feature', 'enhancement']
+    semver-increment: 'minor'
+    when:
+      labels: ['feature', 'enhancement']
   - title: 'Fixed'
-    labels: ['fix', 'bug']
+    semver-increment: 'patch'
+    when:
+      labels: ['fix', 'bug']
   - title: 'Changed'
-    labels: ['change', 'refactor']
+    semver-increment: 'patch'
+    when:
+      labels: ['change', 'refactor']
   - title: 'Documentation'
-    labels: ['docs']
+    semver-increment: 'patch'
+    when:
+      labels: ['docs']
   - title: 'Maintenance'
-    labels: ['chore', 'dependencies']
+    semver-increment: 'patch'
+    when:
+      labels: ['chore', 'dependencies']
+
+  # Bump-only rules: these decide the version but render no section of their own.
+  - type: 'version-resolver'
+    semver-increment: 'major'
+    when:
+      labels: ['major', 'breaking']
+  - type: 'version-resolver'
+    semver-increment: 'minor'
+    when:
+      labels: ['minor']
+  - type: 'version-resolver'
+    semver-increment: 'patch'
+    when:
+      labels: ['patch']
 
 change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 change-title-escapes: '\<*_&'
-
-version-resolver:
-  major:
-    labels: ['major', 'breaking']
-  minor:
-    labels: ['minor', 'feature', 'enhancement']
-  patch:
-    labels: ['patch', 'fix', 'bug', 'chore', 'docs', 'dependencies']
-  default: patch
 
 autolabeler:
   - label: 'docs'

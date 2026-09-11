@@ -10,12 +10,32 @@ permissions:
   contents: read
 
 jobs:
+  # Keeps the draft release up to date. Push only: on a pull_request the action sees an
+  # ephemeral `refs/pull/N/merge` commit, forces dry-run and writes nothing, so running it
+  # there only prints a warning.
   update_release_draft:
+    if: github.event_name == 'push'
     permissions:
       contents: write
-      pull-requests: read
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Applies the label that decides the next version number. Two things are easy to get
+  # wrong here, and both fail silently:
+  #   1. Since v7 the root action only drafts — autolabeling is this separate sub-action.
+  #   2. It APPLIES labels, so it needs `pull-requests: write`; with `read` it applies none.
+  # Either way an unlabelled `feat:` PR falls through to the patch floor, and the draft
+  # comes out a patch release when a minor one was due.
+  autolabel:
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: release-drafter/release-drafter/autolabeler@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
