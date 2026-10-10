@@ -6,10 +6,12 @@ use DateTimeZone;
 use Illuminate\Support\Carbon;
 
 /**
+ * @internal
+ *
  * The Carbon macros this package adds. ThaidateServiceProvider registers them at runtime and
  * phpstan-bootstrap.php registers them for static analysis, so both always agree.
  */
-class CarbonMacros
+final class CarbonMacros
 {
     public static function register(): void
     {
@@ -18,7 +20,7 @@ class CarbonMacros
         });
 
         Carbon::macro('thaiFiscalYear', function (bool $buddhistEra = true): int {
-            return (new Thaidate)->fiscalYear($this, $buddhistEra);
+            return Thaidate::fiscalYear($this, $buddhistEra);
         });
 
         Carbon::macro('startOfThaiFiscalYear', function (): static {
@@ -35,7 +37,7 @@ class CarbonMacros
         // binds its scope to the class it was called on, so static is CarbonImmutable when called
         // as CarbonImmutable::createFromThaiFormat(); PHPStan only sees this file's class here.
         $createFromThaiFormat = static function (string $format, string $value, DateTimeZone|string|null $timezone = null): static {
-            return static::instance((new Thaidate)->parse($format, $value, $timezone)); // @phpstan-ignore staticMethod.notFound
+            return static::instance(Thaidate::parse($format, $value, $timezone)); // @phpstan-ignore staticMethod.notFound
         };
 
         Carbon::macro('createFromThaiFormat', $createFromThaiFormat);
