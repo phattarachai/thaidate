@@ -110,12 +110,12 @@ composer require --dev phpstan/extension-installer
 
 ## ผู้พัฒนา
 
-🙋‍♂️ สวัสดีครับ ผมอ๊อฟนะครับ เป็น Full Stack Web Developer
-รับ Implement งาน Project ทางด้าน Web Application สำหรับองค์กร ธุรกิจ SME ส่วนงานราชการและบริษัทขนาดใหญ่ครับ  
-https://phattarachai.dev
+พัฒนาและดูแลโดย [บริษัท ภัทรชัย อาร์ทิซาน จำกัด](https://phattarachai.dev) (Phattarachai Artisan)
+บริษัทที่ปรึกษาและพัฒนาเว็บ ที่เรียนรู้และแบ่งปันกับชุมชน Laravel
+แพ็กเกจนี้แบ่งปันให้ชุมชนนำไปใช้และต่อยอดได้อย่างอิสระ
 
-line:
-[phat-chai](https://line.me/ti/p/~phat-chai)
+ดูแพ็กเกจอื่นของเราได้ที่ [phattarachai.dev/open-source](https://phattarachai.dev/open-source)
+และติดต่อเราได้ที่ [phattarachai.dev](https://phattarachai.dev/#contact)
 
 ## License
 
