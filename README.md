@@ -54,7 +54,7 @@ Escape a token with a backslash to print it as a letter: `thaidate('\Y\e\a\r Y')
 ```php
 thaidate(
     string $format = 'j F Y',
-    string|int|DateTimeInterface $timestamp = 'now',
+    string|int|DateTimeInterface|null $date = null,
     bool $buddhistEra = true,
     bool $thaiDigits = false,
 ): string
@@ -63,7 +63,7 @@ thaidate(
 | Parameter | Description |
 | --- | --- |
 | `$format` | The same format tokens as PHP's `date()`. |
-| `$timestamp` | The date to format: a Unix timestamp, a string `strtotime()` understands, or any `DateTimeInterface` (`DateTime`, `Carbon`, …). Defaults to now. |
+| `$date` | The date to format: a Unix timestamp, a date string PHP understands (`'2021-02-25'`, `'tomorrow'`), any `DateTimeInterface` (`DateTime`, `Carbon`, …), or `null` for now. A string PHP can't read throws `InvalidFormatException`. |
 | `$buddhistEra` | `true` (default) prints `Y`, `y` and `o` as Buddhist-era years (พ.ศ.). Pass `false` to keep the Gregorian year (ค.ศ.). |
 | `$thaiDigits` | `true` prints the date's numbers in Thai digits (๐–๙). See [Thai digits](#thai-digits). |
 
@@ -80,6 +80,11 @@ echo thaidate('j F Y', new DateTime('2021-02-25'));
 echo thaidate('j F Y', '2021-02-25', false);
 // 25 กุมภาพันธ์ 2021
 ```
+
+The same formatter is available as static methods on `Phattarachai\Thaidate\Thaidate`: `format()`,
+`parse()` and `fiscalYear()`, plus the name lists as constants (`Thaidate::LONG_MONTHS`, …).
+
+Upgrading from 13.x? See [UPGRADE.md](UPGRADE.md).
 
 ## <a id="carbon-macros"></a> Carbon macros
 
@@ -191,8 +196,8 @@ public function rules(): array
 ## <a id="timezone"></a> Timezone
 
 A `DateTimeInterface` is formatted in its own timezone, so a `Carbon` set to `Asia/Bangkok` prints
-Bangkok time even when the app runs in UTC. A timestamp or a date string has no timezone of its own, so
-it is formatted in PHP's default timezone (`date_default_timezone_get()`, which Laravel sets from
+Bangkok time even when the app runs in UTC. A timestamp, or a date string without an offset, has no timezone of
+its own, so it is formatted in PHP's default timezone (`date_default_timezone_get()`, which Laravel sets from
 `app.timezone`), the same as `date()`.
 
 ```php

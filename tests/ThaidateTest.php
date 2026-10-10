@@ -1,5 +1,8 @@
 <?php
 
+use Carbon\Exceptions\InvalidFormatException;
+use Phattarachai\Thaidate\Thaidate;
+
 it('converts a short day/month/year format', function () {
     expect(thaidate('D j M y', strtotime('2021-02-25')))->toBe('พฤ. 25 ก.พ. 64');
 });
@@ -79,4 +82,24 @@ it('prints the date in Thai digits', function () {
 
 it('leaves literal digits in the format as written in Thai digits mode', function () {
     expect(thaidate('j F Y \1', '2026-10-10', thaiDigits: true))->toBe('๑๐ ตุลาคม ๒๕๖๙ 1');
+});
+
+it('formats now when given null', function () {
+    expect(thaidate('Y', null))->toBe((string) ((int) date('Y') + 543));
+});
+
+it('rejects a string that is not a date', function () {
+    thaidate('j F Y', 'not a date');
+})->throws(InvalidFormatException::class);
+
+it('keeps the offset written in a date string', function () {
+    date_default_timezone_set('UTC');
+
+    expect(thaidate('j F Y H:i', '2026-10-10T23:30:00+07:00'))->toBe('10 ตุลาคม 2569 23:30');
+});
+
+it('exposes the formatter as static methods', function () {
+    expect(Thaidate::format('j M Y', new DateTimeImmutable('2026-10-10'), true))->toBe('10 ต.ค. 2569')
+        ->and(Thaidate::fiscalYear(new DateTimeImmutable('2026-10-10')))->toBe(2570)
+        ->and(Thaidate::LONG_MONTHS[9])->toBe('ตุลาคม');
 });

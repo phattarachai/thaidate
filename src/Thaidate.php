@@ -6,8 +6,12 @@ use Carbon\Exceptions\InvalidFormatException;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
+use Exception;
 
-class Thaidate
+/**
+ * Formats, parses and reads the fiscal year of Thai dates. Every method is static and pure.
+ */
+final class Thaidate
 {
     /** @var list<string> Thai digits indexed by their value. */
     public const THAI_DIGITS = [
@@ -16,16 +20,16 @@ class Thaidate
     ];
 
     /** @var list<string> */
-    protected const ENGLISH_MONTHS = [
+    private const ENGLISH_MONTHS = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December',
     ];
 
     /** @var list<string> */
-    protected const ENGLISH_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    private const ENGLISH_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     /** @var list<string> */
-    public array $longMonths = [
+    public const LONG_MONTHS = [
         'มกราคม',
         'กุมภาพันธ์',
         'มีนาคม',
@@ -41,7 +45,7 @@ class Thaidate
     ];
 
     /** @var list<string> */
-    public array $shortMonths = [
+    public const SHORT_MONTHS = [
         'ม.ค.',
         'ก.พ.',
         'มี.ค.',
@@ -57,22 +61,28 @@ class Thaidate
     ];
 
     /** @var list<string> */
-    public array $longDays = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+    public const LONG_DAYS = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
 
     /** @var list<string> */
-    public array $shortDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+    public const SHORT_DAYS = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
 
     /**
-     * Format a Unix timestamp into a Thai date string, in the default timezone.
+     * Turn what thaidate() accepts into a DateTime: null is now, a timestamp and a date string
+     * use the default timezone, and a DateTime is kept as it is.
      *
-     * @param  string  $format  Same tokens as PHP's date().
-     * @param  int  $timestamp  A Unix timestamp.
-     * @param  bool  $buddhistEra  Convert the year to the Buddhist era.
-     * @param  bool  $thaiDigits  Print the date's numbers in Thai digits (๐–๙).
+     * @throws InvalidFormatException when the string isn't a date PHP can read.
      */
-    public function date(string $format, int $timestamp, bool $buddhistEra, bool $thaiDigits = false): string
+    public static function toDateTime(string|int|DateTimeInterface|null $date): DateTimeInterface
     {
-        return $this->format($format, (new DateTimeImmutable)->setTimestamp($timestamp), $buddhistEra, $thaiDigits);
+        try {
+            return match (true) {
+                $date instanceof DateTimeInterface => $date,
+                is_int($date) => (new DateTimeImmutable)->setTimestamp($date),
+                default => new DateTimeImmutable($date ?? 'now'),
+            };
+        } catch (Exception $exception) {
+            throw new InvalidFormatException("'{$date}' is not a date PHP can read.", previous: $exception);
+        }
     }
 
     /**
@@ -85,7 +95,7 @@ class Thaidate
      * @param  bool  $buddhistEra  Convert the year to the Buddhist era.
      * @param  bool  $thaiDigits  Print the date's numbers in Thai digits (๐–๙). Literal text in the format is left as written.
      */
-    public function format(string $format, DateTimeInterface $date, bool $buddhistEra, bool $thaiDigits = false): string
+    public static function format(string $format, DateTimeInterface $date, bool $buddhistEra, bool $thaiDigits = false): string
     {
         $output = '';
         $length = strlen($format);
@@ -98,7 +108,7 @@ class Thaidate
                 continue;
             }
 
-            $value = $this->token($format[$i], $date, $buddhistEra);
+            $value = self::token($format[$i], $date, $buddhistEra);
 
             $output .= $thaiDigits ? strtr($value, self::THAI_DIGITS) : $value;
         }
@@ -112,7 +122,7 @@ class Thaidate
      *
      * @param  bool  $buddhistEra  Return the Buddhist-era year (2570) instead of the Gregorian one (2027).
      */
-    public function fiscalYear(DateTimeInterface $date, bool $buddhistEra = true): int
+    public static function fiscalYear(DateTimeInterface $date, bool $buddhistEra = true): int
     {
         $year = (int) $date->format('Y') + ((int) $date->format('n') >= 10 ? 1 : 0);
 
@@ -129,7 +139,7 @@ class Thaidate
      *
      * @throws InvalidFormatException when the value doesn't match the format or isn't a real date.
      */
-    public function parse(string $format, string $value, DateTimeZone|string|null $timezone = null): DateTimeImmutable
+    public static function parse(string $format, string $value, DateTimeZone|string|null $timezone = null): DateTimeImmutable
     {
         $timezone = match (true) {
             $timezone instanceof DateTimeZone => $timezone,
@@ -137,9 +147,9 @@ class Thaidate
             default => new DateTimeZone(date_default_timezone_get()),
         };
 
-        $tokens = $this->tokens($format);
+        $tokens = self::tokens($format);
 
-        [$numericFormat, $numericValue] = $this->withoutNames($format, strtr($value, array_flip(self::THAI_DIGITS)));
+        [$numericFormat, $numericValue] = self::withoutNames($format, strtr($value, array_flip(self::THAI_DIGITS)));
 
         $parsed = date_parse_from_format($numericFormat, $numericValue);
 
@@ -151,7 +161,7 @@ class Thaidate
             throw new InvalidFormatException("'{$value}' is not a valid time.");
         }
 
-        $timezone = $this->parsedTimezone($parsed) ?? $timezone;
+        $timezone = self::parsedTimezone($parsed) ?? $timezone;
         $today = new DateTimeImmutable('now', $timezone);
 
         $year = match (true) {
@@ -182,7 +192,7 @@ class Thaidate
      *
      * @return list<string>
      */
-    protected function tokens(string $format): array
+    private static function tokens(string $format): array
     {
         $tokens = [];
         $length = strlen($format);
@@ -210,7 +220,7 @@ class Thaidate
      *
      * @return array{string, string} The format and the value.
      */
-    protected function withoutNames(string $format, string $value): array
+    private static function withoutNames(string $format, string $value): array
     {
         $pattern = '';
         $numericFormat = '';
@@ -228,8 +238,8 @@ class Thaidate
             }
 
             $pattern .= match ($token) {
-                'F', 'M' => $this->namePattern([...$this->longMonths, ...$this->shortMonths, ...self::ENGLISH_MONTHS, ...$this->abbreviate(self::ENGLISH_MONTHS)]),
-                'l', 'D' => $this->namePattern([...$this->longDays, ...$this->shortDays, ...self::ENGLISH_DAYS, ...$this->abbreviate(self::ENGLISH_DAYS)]),
+                'F', 'M' => self::namePattern([...self::LONG_MONTHS, ...self::SHORT_MONTHS, ...self::ENGLISH_MONTHS, ...self::abbreviate(self::ENGLISH_MONTHS)]),
+                'l', 'D' => self::namePattern([...self::LONG_DAYS, ...self::SHORT_DAYS, ...self::ENGLISH_DAYS, ...self::abbreviate(self::ENGLISH_DAYS)]),
                 '#' => '[;:\/.,\-()]',
                 '?' => '.',
                 '*', '+' => '.*?',
@@ -249,7 +259,7 @@ class Thaidate
         }
 
         foreach (array_reverse(array_slice($matches, 1)) as [$name, $offset]) {
-            $value = substr_replace($value, (string) ($this->monthNumber($name) ?? ''), $offset, strlen($name));
+            $value = substr_replace($value, (string) (self::monthNumber($name) ?? ''), $offset, strlen($name));
         }
 
         return [$numericFormat, $value];
@@ -258,7 +268,7 @@ class Thaidate
     /**
      * @param  list<string>  $names
      */
-    protected function namePattern(array $names): string
+    private static function namePattern(array $names): string
     {
         usort($names, fn (string $a, string $b): int => strlen($b) <=> strlen($a));
 
@@ -268,9 +278,9 @@ class Thaidate
     /**
      * The month number (1–12) a Thai or English month name stands for, or null for a day name.
      */
-    protected function monthNumber(string $name): ?int
+    private static function monthNumber(string $name): ?int
     {
-        foreach ([$this->longMonths, $this->shortMonths, self::ENGLISH_MONTHS, $this->abbreviate(self::ENGLISH_MONTHS)] as $names) {
+        foreach ([self::LONG_MONTHS, self::SHORT_MONTHS, self::ENGLISH_MONTHS, self::abbreviate(self::ENGLISH_MONTHS)] as $names) {
             $index = array_search(strtolower($name), array_map(strtolower(...), $names), true);
 
             if ($index !== false) {
@@ -285,9 +295,9 @@ class Thaidate
      * @param  list<string>  $names
      * @return list<string>
      */
-    protected function abbreviate(array $names): array
+    private static function abbreviate(array $names): array
     {
-        return array_map(fn (string $name): string => substr($name, 0, 3), $names);
+        return array_map(static fn (string $name): string => substr($name, 0, 3), $names);
     }
 
     /**
@@ -295,7 +305,7 @@ class Thaidate
      *
      * @param  array<string, mixed>  $parsed
      */
-    protected function parsedTimezone(array $parsed): ?DateTimeZone
+    private static function parsedTimezone(array $parsed): ?DateTimeZone
     {
         $offset = (int) ($parsed['zone'] ?? 0);
 
@@ -307,25 +317,25 @@ class Thaidate
         };
     }
 
-    protected function token(string $token, DateTimeInterface $date, bool $buddhistEra): string
+    private static function token(string $token, DateTimeInterface $date, bool $buddhistEra): string
     {
         return match ($token) {
-            'l' => $this->longDays[$this->dayNum($date)],
-            'D' => $this->shortDays[$this->dayNum($date)],
-            'F' => $this->longMonths[$this->monthNum($date)],
-            'M' => $this->shortMonths[$this->monthNum($date)],
+            'l' => self::LONG_DAYS[self::dayNum($date)],
+            'D' => self::SHORT_DAYS[self::dayNum($date)],
+            'F' => self::LONG_MONTHS[self::monthNum($date)],
+            'M' => self::SHORT_MONTHS[self::monthNum($date)],
             'Y', 'o' => $buddhistEra ? (string) ((int) $date->format($token) + 543) : $date->format($token),
             'y' => $buddhistEra ? sprintf('%02d', ((int) $date->format('y') + 43) % 100) : $date->format('y'),
             default => $date->format($token),
         };
     }
 
-    protected function monthNum(DateTimeInterface $date): int
+    private static function monthNum(DateTimeInterface $date): int
     {
         return (int) $date->format('n') - 1;
     }
 
-    protected function dayNum(DateTimeInterface $date): int
+    private static function dayNum(DateTimeInterface $date): int
     {
         return (int) $date->format('w');
     }
