@@ -11,6 +11,6 @@ use Illuminate\Support\Carbon;
  * factory lets that extension resolve the call on any CarbonInterface subclass. Consumers get
  * this for free via extra.phpstan.includes + phpstan/extension-installer; no per-project setup.
  */
-Carbon::macro('thaidate', function (string $format = 'j F Y'): string {
-    return thaidate($format, $this->timestamp);
+Carbon::macro('thaidate', function (string $format = 'j F Y', bool $buddhistEra = true): string {
+    return thaidate($format, $this, $buddhistEra);
 });

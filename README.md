@@ -12,7 +12,7 @@ years and Thai month/day names.
 
 ## <a id="installation"></a> Installation
 
-```
+```bash
 composer require phattarachai/thaidate
 ```
 
@@ -36,6 +36,39 @@ echo thaidate('วันlที่ j F พ.ศ.Y เวลา H:i:s');
 // results: วันพฤหัสบดีที่ 25 กุมภาพันธ์ พ.ศ.2564 เวลา 23:55:29
 ```
 
+### Parameters
+
+```php
+thaidate(string $format = 'j F Y', string|int|DateTimeInterface $timestamp = 'now', bool $buddhistEra = true): string
+```
+
+| Parameter | Description |
+| --- | --- |
+| `$format` | The same format tokens as PHP's `date()`. `l`, `D`, `F` and `M` print Thai day and month names. |
+| `$timestamp` | The date to format: a Unix timestamp, a string `strtotime()` understands, or any `DateTimeInterface` (`DateTime`, `Carbon`, …). Defaults to now. |
+| `$buddhistEra` | `true` (default) prints `Y`, `y` and `o` as Buddhist-era years (พ.ศ.). Pass `false` to keep the Gregorian year (ค.ศ.). |
+
+```php
+echo thaidate('j F Y', '2021-02-25');
+// 25 กุมภาพันธ์ 2564
+
+echo thaidate('j F Y', 1614211200);
+// 25 กุมภาพันธ์ 2564
+
+echo thaidate('j F Y', new DateTime('2021-02-25'));
+// 25 กุมภาพันธ์ 2564
+
+echo thaidate('j F Y', '2021-02-25', false);
+// 25 กุมภาพันธ์ 2021
+```
+
+### Timezone
+
+A `DateTimeInterface` is formatted in its own timezone, so a `Carbon` set to `Asia/Bangkok` prints
+Bangkok time even when the app runs in UTC. A timestamp or a date string has no timezone of its own, so
+it is formatted in PHP's default timezone (`date_default_timezone_get()`, which Laravel sets from
+`app.timezone`) — the same as `date()`.
+
 # Laravel Carbon Usage
 
 You can also use `thaidate()` function directly from Laravel carbon instance. It uses Laravel macro feature to add the
@@ -49,7 +82,13 @@ Carbon::parse('2021-02-25')->thaidate();
 
 Carbon::parse('2021-02-25')->thaidate('D j M y');
 // พฤ. 25 ก.พ. 64
+
+Carbon::parse('2021-02-25')->thaidate('j F Y', false);
+// 25 กุมภาพันธ์ 2021
 ```
+
+The macro takes the same `$format` and `$buddhistEra` parameters as `thaidate()`, and formats in the Carbon
+instance's own timezone.
 
 This means you can use thaidate() directly from an Eloquent model attributes that is a date attribute as well.
 

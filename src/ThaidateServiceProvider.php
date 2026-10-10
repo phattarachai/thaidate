@@ -9,8 +9,8 @@ class ThaidateServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        Carbon::macro('thaidate', function ($format = 'j F Y') {
-            return thaidate($format, $this->timestamp);
+        Carbon::macro('thaidate', function (string $format = 'j F Y', bool $buddhistEra = true): string {
+            return thaidate($format, $this, $buddhistEra);
         });
     }
 }

@@ -35,3 +35,24 @@ it('formats the current time when given no timestamp', function () {
 it('uses the default format', function () {
     expect(thaidate())->toBeString();
 });
+
+it('pads a Buddhist-era two-digit year with a leading zero', function () {
+    expect(thaidate('y', '2057-06-01'))->toBe('00')
+        ->and(thaidate('y', '2058-06-01'))->toBe('01');
+});
+
+it('formats a DateTime in its own timezone, not the default one', function () {
+    date_default_timezone_set('UTC');
+
+    $date = new DateTimeImmutable('2026-10-10 23:30', new DateTimeZone('Asia/Bangkok'));
+
+    expect(thaidate('l j F Y H:i', $date))->toBe('เสาร์ 10 ตุลาคม 2569 23:30');
+});
+
+it('formats a timestamp in the default timezone', function () {
+    date_default_timezone_set('Asia/Bangkok');
+
+    $timestamp = (new DateTimeImmutable('2026-12-31 20:00', new DateTimeZone('UTC')))->getTimestamp();
+
+    expect(thaidate('j F Y H:i', $timestamp))->toBe('1 มกราคม 2570 03:00');
+});
