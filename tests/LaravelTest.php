@@ -27,3 +27,7 @@ it('formats a UTC Carbon in UTC when the default timezone is ahead', function ()
 it('keeps the Gregorian year when the macro turns the Buddhist era off', function () {
     expect(Carbon::parse('2021-02-25')->thaidate('j F Y', false))->toBe('25 กุมภาพันธ์ 2021');
 });
+
+it('prints Thai digits through the macro', function () {
+    expect(Carbon::parse('2021-02-25')->thaidate('j F Y', thaiDigits: true))->toBe('๒๕ กุมภาพันธ์ ๒๕๖๔');
+});

@@ -71,3 +71,12 @@ it('passes Thai text and other tokens through unchanged', function () {
     expect(thaidate('วันlที่ j F พ.ศ.Y เวลา H:i น.', '2026-10-10 09:05'))
         ->toBe('วันเสาร์ที่ 10 ตุลาคม พ.ศ.2569 เวลา 09:05 น.');
 });
+
+it('prints the date in Thai digits', function () {
+    expect(thaidate('j F Y เวลา H:i', '2026-10-10 09:05', thaiDigits: true))->toBe('๑๐ ตุลาคม ๒๕๖๙ เวลา ๐๙:๐๕')
+        ->and(thaidate('j/n/Y', '2026-10-10', false, true))->toBe('๑๐/๑๐/๒๐๒๖');
+});
+
+it('leaves literal digits in the format as written in Thai digits mode', function () {
+    expect(thaidate('j F Y \1', '2026-10-10', thaiDigits: true))->toBe('๑๐ ตุลาคม ๒๕๖๙ 1');
+});

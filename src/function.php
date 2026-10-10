@@ -11,8 +11,9 @@ use Phattarachai\Thaidate\Thaidate;
  * @param  string  $format  Same tokens as PHP's date() — see https://php.net/manual/en/function.date.php
  * @param  string|int|DateTimeInterface  $timestamp  A Unix timestamp, a strtotime() string, or a DateTime.
  * @param  bool  $buddhistEra  Convert the year to the Buddhist era.
+ * @param  bool  $thaiDigits  Print the date's numbers in Thai digits (๐–๙).
  */
-function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEra = true): string
+function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEra = true, bool $thaiDigits = false): string
 {
     if (is_string($timestamp)) {
         $timestamp = strtotime($timestamp);
@@ -22,5 +23,5 @@ function thaidate(string $format = 'j F Y', $timestamp = 'now', bool $buddhistEr
         $timestamp = (new DateTimeImmutable)->setTimestamp((int) $timestamp);
     }
 
-    return (new Thaidate)->format($format, $timestamp, $buddhistEra);
+    return (new Thaidate)->format($format, $timestamp, $buddhistEra, $thaiDigits);
 }
