@@ -56,3 +56,18 @@ it('formats a timestamp in the default timezone', function () {
 
     expect(thaidate('j F Y H:i', $timestamp))->toBe('1 มกราคม 2570 03:00');
 });
+
+it('leaves an escaped token as a literal', function () {
+    expect(thaidate('j F \Y\e\a\r Y', '2026-10-10'))->toBe('10 ตุลาคม Year 2569')
+        ->and(thaidate('\l\D l', '2026-10-10'))->toBe('lD เสาร์');
+});
+
+it('translates every token when a format holds several', function () {
+    expect(thaidate('l (D) j F (M)', '2026-10-10'))->toBe('เสาร์ (ส.) 10 ตุลาคม (ต.ค.)')
+        ->and(thaidate('Y / y / o', '2026-10-10'))->toBe('2569 / 69 / 2569');
+});
+
+it('passes Thai text and other tokens through unchanged', function () {
+    expect(thaidate('วันlที่ j F พ.ศ.Y เวลา H:i น.', '2026-10-10 09:05'))
+        ->toBe('วันเสาร์ที่ 10 ตุลาคม พ.ศ.2569 เวลา 09:05 น.');
+});
