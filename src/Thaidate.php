@@ -60,67 +60,42 @@ class Thaidate
     /**
      * Format a DateTime into a Thai date string, in that DateTime's own timezone.
      *
+     * The format is read one token at a time, so a backslash escapes the next character
+     * and every token is translated, however many the format holds.
+     *
      * @param  string  $format  Same tokens as PHP's date().
      * @param  bool  $buddhistEra  Convert the year to the Buddhist era.
      */
     public function format(string $format, DateTimeInterface $date, bool $buddhistEra): string
     {
-        $format = $this->parseDay($format, $date);
+        $output = '';
+        $length = strlen($format);
 
-        $format = $this->parseMonth($format, $date);
+        for ($i = 0; $i < $length; $i++) {
+            if ($format[$i] === '\\') {
+                $i++;
+                $output .= $format[$i] ?? '';
 
-        $format = $this->parseYear($format, $date, $buddhistEra);
+                continue;
+            }
 
-        return $date->format($format);
+            $output .= $this->token($format[$i], $date, $buddhistEra);
+        }
+
+        return $output;
     }
 
-    protected function parseDay(string $format, DateTimeInterface $date): string
+    protected function token(string $token, DateTimeInterface $date, bool $buddhistEra): string
     {
-        if (str_contains($format, 'l')) {
-            return str_replace('l', $this->longDays[$this->dayNum($date)], $format);
-        }
-
-        if (str_contains($format, 'D')) {
-            return str_replace('D', $this->shortDays[$this->dayNum($date)], $format);
-        }
-
-        return $format;
-    }
-
-    protected function parseMonth(string $format, DateTimeInterface $date): string
-    {
-        if (str_contains($format, 'F')) {
-            return str_replace('F', $this->longMonths[$this->monthNum($date)], $format);
-        }
-
-        if (str_contains($format, 'M')) {
-            return str_replace('M', $this->shortMonths[$this->monthNum($date)], $format);
-        }
-
-        return $format;
-    }
-
-    private function parseYear(string $format, DateTimeInterface $date, bool $buddhistEra): string
-    {
-        if (! $buddhistEra) {
-            return $format;
-        }
-
-        if (str_contains($format, 'o')) {
-            return str_replace('o', (string) ((int) $date->format('o') + 543), $format);
-        }
-
-        if (str_contains($format, 'Y')) {
-            return str_replace('Y', (string) ((int) $date->format('Y') + 543), $format);
-        }
-
-        if (str_contains($format, 'y')) {
-            $year = ((int) $date->format('y') + 43) % 100;
-
-            return str_replace('y', sprintf('%02d', $year), $format);
-        }
-
-        return $format;
+        return match ($token) {
+            'l' => $this->longDays[$this->dayNum($date)],
+            'D' => $this->shortDays[$this->dayNum($date)],
+            'F' => $this->longMonths[$this->monthNum($date)],
+            'M' => $this->shortMonths[$this->monthNum($date)],
+            'Y', 'o' => $buddhistEra ? (string) ((int) $date->format($token) + 543) : $date->format($token),
+            'y' => $buddhistEra ? sprintf('%02d', ((int) $date->format('y') + 43) % 100) : $date->format('y'),
+            default => $date->format($token),
+        };
     }
 
     protected function monthNum(DateTimeInterface $date): int
