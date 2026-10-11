@@ -269,6 +269,10 @@ automatically in any project using [`phpstan/extension-installer`](https://githu
 composer require --dev phpstan/extension-installer
 ```
 
+## License
+
+The MIT License (MIT)
+
 ## ผู้พัฒนา
 
 พัฒนาและดูแลโดย [บริษัท ภัทรชัย อาร์ทิซาน จำกัด](https://phattarachai.dev) (Phattarachai Artisan)
@@ -277,7 +281,3 @@ composer require --dev phpstan/extension-installer
 
 ดูแพ็กเกจอื่นของเราได้ที่ [phattarachai.dev/open-source](https://phattarachai.dev/open-source)
 และติดต่อเราได้ที่ [phattarachai.dev](https://phattarachai.dev/#contact)
-
-## License
-
-The MIT License (MIT)
