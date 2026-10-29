@@ -13,6 +13,9 @@ use Illuminate\Support\Carbon;
  */
 final class CarbonMacros
 {
+    /** @var list<string> */
+    public const array NAMES = ['thaidate', 'thaiFiscalYear', 'startOfThaiFiscalYear', 'endOfThaiFiscalYear', 'createFromThaiFormat'];
+
     public static function register(): void
     {
         Carbon::macro('thaidate', function (string $format = 'j F Y', bool $buddhistEra = true, bool $thaiDigits = false): string {

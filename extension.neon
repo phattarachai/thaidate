@@ -1,6 +1,13 @@
 # Auto-loaded in a consuming project by phpstan/extension-installer (declared under
 # extra.phpstan.includes in composer.json). Registers the thaidate() Carbon macro for
-# static analysis so Carbon's own MacroExtension can resolve ->thaidate() everywhere.
+# static analysis so Carbon's own MacroExtension can resolve ->thaidate() on Carbon classes, and
+# adds CarbonInterfaceMacroExtension for values typed CarbonInterface, which Carbon's extension skips.
 parameters:
     bootstrapFiles:
         - phpstan-bootstrap.php
+
+services:
+    -
+        class: Phattarachai\Thaidate\PHPStan\CarbonInterfaceMacroExtension
+        tags:
+            - phpstan.broker.methodsClassReflectionExtension
