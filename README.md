@@ -262,11 +262,20 @@ return Inertia::render('Orders/Show', [
 
 The macros are registered at runtime, which PHPStan can't see on its own. This package ships the
 PHPStan support to fix that: `->thaidate()`, the fiscal-year macros and `::createFromThaiFormat()` resolve
-with their real types and no "undefined method" errors or per-project baseline entries. It activates
-automatically in any project using [`phpstan/extension-installer`](https://github.com/phpstan/extension-installer):
+with their real types and no "undefined method" errors or per-project baseline entries, on `Carbon`,
+`CarbonImmutable` and a value typed `CarbonInterface`. It activates automatically in any project using
+[`phpstan/extension-installer`](https://github.com/phpstan/extension-installer):
 
 ```bash
 composer require --dev phpstan/extension-installer
+```
+
+Without the installer, include this package's extension and Carbon's own in `phpstan.neon`:
+
+```neon
+includes:
+    - vendor/nesbot/carbon/extension.neon
+    - vendor/phattarachai/thaidate/extension.neon
 ```
 
 ## License

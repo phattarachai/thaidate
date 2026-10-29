@@ -1,6 +1,8 @@
 <?php
 
+use Carbon\FactoryImmutable;
 use Illuminate\Support\Carbon;
+use Phattarachai\Thaidate\CarbonMacros;
 
 it('resolves the ->thaidate() macro in a short format', function () {
     expect(Carbon::parse('2021-02-25')->thaidate('D j M y'))->toBe('พฤ. 25 ก.พ. 64');
@@ -30,4 +32,12 @@ it('keeps the Gregorian year when the macro turns the Buddhist era off', functio
 
 it('prints Thai digits through the macro', function () {
     expect(Carbon::parse('2021-02-25')->thaidate('j F Y', thaiDigits: true))->toBe('๒๕ กุมภาพันธ์ ๒๕๖๔');
+});
+
+it('lists every macro it registers, so PHPStan resolves them on CarbonInterface', function () {
+    Carbon::resetMacros();
+    CarbonMacros::register();
+
+    expect(array_keys(FactoryImmutable::getDefaultInstance()->getSettings()['macros']))
+        ->toEqualCanonicalizing(CarbonMacros::NAMES);
 });
