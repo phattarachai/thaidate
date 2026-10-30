@@ -54,6 +54,14 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
+        },
+        "policy": {
+            "cooldown": {
+                "period": "1 day",
+                "ignore": {
+                    "phattarachai/*": "Our own packages, released by us"
+                }
+            }
         }
     },
     "minimum-stability": "stable",
