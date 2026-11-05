@@ -26,7 +26,10 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-interaction --no-progress
+        run: |
+          # A fix for an advisory can still be in cooldown, leaving nothing installable: retry past the cooldown only then.
+          composer update --prefer-dist --no-interaction --no-progress \
+            || composer update --prefer-dist --no-interaction --no-progress --no-cooldown
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --error-format=github
