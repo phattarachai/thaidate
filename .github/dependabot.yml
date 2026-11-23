@@ -9,6 +9,13 @@ updates:
     cooldown:
       default-days: 3
     labels: ['dependencies']
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types: [minor, patch]
+      security:
+        applies-to: security-updates
+        update-types: [minor, patch]
 
   - package-ecosystem: github-actions
     directory: /
@@ -18,3 +25,10 @@ updates:
     cooldown:
       default-days: 3
     labels: ['dependencies']
+    groups:
+      actions:
+        applies-to: version-updates
+        patterns: ["*"]
+      security:
+        applies-to: security-updates
+        update-types: [minor, patch]
